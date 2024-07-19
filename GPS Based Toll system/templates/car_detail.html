@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f7f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .car-details {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px solid #007BFF;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .car-details p {
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        #map-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Car Details</h1>
+    <div class="car-details">
+        <p>Car ID: {{ car[0] }}</p>
+        <p>Car Number: {{ car[1] }}</p>
+        <p>Balance: {{ car[2] }} currency units</p>
+    </div>
+
+    {% if map_html %}
+    <div id="map-container">
+        <h3>Last stopped region</h3>
+        {{ map_html|safe }}
+    </div>
+    {% else %}
+    <p>No GPS data available for this car.</p>
+    {% endif %}
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</body>
+</html>

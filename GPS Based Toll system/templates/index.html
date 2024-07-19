@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS Toll System</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5dc;
+            color: #333;
+            background: url('https://i.imghippo.com/files/rtJv71720352316.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #A0522D;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            color: #fff;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            background-color: #8B4513;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .welcome-text {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #A0522D;
+        }
+
+        .form-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        form {
+            flex: 1;
+            background-color: #c1e3f0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-right: 10px;
+        }
+
+        form:last-child {
+            margin-right: 0;
+        }
+
+        form h2 {
+            margin-top: 0;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        form input {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: calc(100% - 18px);
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            padding: 10px 20px;
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #5C3317;
+        }
+
+        .result-container {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #addaea;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-container h2 {
+            margin-top: 0;
+        }
+
+        .car-container {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .car-container:hover {
+            background-color: #f0f0f0;
+        }
+
+        .car-container h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #A0522D;
+        }
+
+        .car-container p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        #map {
+            height: 400px;
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>GPS Toll System</h1>
+        <a href="/logout">Logout</a>
+    </header>
+
+    <div class="container">
+        <div class="welcome-text">Welcome {{ name }}</div>
+        <div class="form-container">
+            <form method="post" action="/add">
+                <h2>Add Car Information</h2>
+                <label for="car_id">Car ID:</label>
+                <input type="text" id="car_id" name="car_id" required>
+                <label for="gps_data">GPS Data (lat,lon;lat,lon;...):</label>
+                <input type="text" id="gps_data" name="gps_data" required>
+                <button type="submit">Submit</button>
+            </form>
+            <form method="post" action="/register">
+                <h2>Register Car Information</h2>
+                <label for="car_number">Car Number:</label>
+                <input type="text" id="car_number" name="car_number" required>
+                <label for="balance">Balance:</label>
+                <input type="text" id="balance" name="balance" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <div class="result-container" id="result-container">
+            <h2>Transaction History</h2>
+            {% for car in cars %}
+            <div class="car-container">
+                <h2><a href="{{ url_for('car_detail', car_id=car[0]) }}">Car ID: {{ car[0] }}</a></h2>
+                <p>Car Number: {{ car[1] }}</p>
+                <p>Balance: {{ car[2] }} currency units</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        function scrollToBottom() {
+            var container = document.getElementById('result-container');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Scroll to bottom when the page loads
+        window.onload = function() {
+            scrollToBottom();
+        };
+
+        // Optional: Scroll to bottom when new content is added
+        // This assumes you're using some client-side update mechanism
+        // You might need to adapt this to your specific case
+        // Example:
+        // document.getElementById('result-container').addEventListener('DOMNodeInserted', scrollToBottom);
+    </script>
+</body>
+
+</html>
