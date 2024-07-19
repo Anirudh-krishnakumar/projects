@@ -27,7 +27,7 @@ This project simulates a system to calculate toll charges based on vehicle locat
    - Navigate to the directory where you want to clone the project.
    - Use the following command to clone the repository:
      ```sh
-     git clone https://github.com/projects/GPS Based Toll system.git
+     git clone https://github.com/Anirudh-krishnakumar/projects/GPS Based Toll system.git
      ```
 
 2. **Install Dependencies**:
