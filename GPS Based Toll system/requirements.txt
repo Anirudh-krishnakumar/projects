@@ -1,0 +1,4 @@
+Flask==2.3.2
+geopy==2.3.0
+folium==0.14.0
+mysql-connector-python==8.0.33
