@@ -3,8 +3,8 @@
 This project simulates a system to calculate toll charges based on vehicle locations using GPS data. It is designed for end users managing toll data, such as vehicle details, available balances, and last logged GPS data. The project uses Python and MySQL, with Flask for handling requests (GET and POST), Geopy for distance calculations, Folium for updating car balance details, and MySQL Connector for database interactions. An interactive web UI makes it easy for government employees to use.
 
 ## Team Members
-- Jaaswin S
 - Anirudh K
+- Jaaswin S
 - Edward Samuel L
 - Gokul P
 
@@ -27,7 +27,7 @@ This project simulates a system to calculate toll charges based on vehicle locat
    - Navigate to the directory where you want to clone the project.
    - Use the following command to clone the repository:
      ```sh
-     git clone https://github.com/JASWINCKS/GPS-Toll-based-System-Simulation.git
+     git clone https://github.com/projects/GPS Based Toll system.git
      ```
 
 2. **Install Dependencies**:
